@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel: ViewModel() {
-
-    private val useCase = ListUseCase(ListRepositoryImpl())
+class MainViewModel(
+    private val useCase: ListUseCase
+): ViewModel() {
 
     private val _state = MutableStateFlow<MainState>(MainState.Loading)
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->

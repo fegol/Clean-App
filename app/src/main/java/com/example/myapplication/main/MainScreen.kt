@@ -12,9 +12,10 @@ import androidx.compose.ui.Modifier
 import com.example.domain.entity.ListElement
 import com.example.myapplication.main.vm.MainState
 import com.example.myapplication.main.vm.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainScreen(viewModel: MainViewModel = androidx.lifecycle.viewmodel.compose.viewModel()) {
+fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
     Box(modifier = Modifier.fillMaxSize()) {
         when (val st = state) {
