@@ -1,5 +1,6 @@
 package com.example.myapplication.main
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,19 +17,24 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.domain.entity.ListElement
+import com.example.myapplication.details.DetailsScreenRoute
 import com.example.myapplication.main.vm.MainState
 import com.example.myapplication.main.vm.MainViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
+fun MainScreen(navController: NavController, viewModel: MainViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsState()
     Box(modifier = Modifier.fillMaxSize()) {
         when (val st = state) {
             is MainState.Content -> {
-                ContentState(list = st.list)
+                ContentState(
+                    navController = navController,
+                    list = st.list
+                )
             }
 
             is MainState.Error -> {
@@ -48,10 +54,15 @@ fun ErrorState(message: String) {
 }
 
 @Composable
-fun ContentState(list: List<ListElement>) {
+fun ContentState(navController: NavController, list: List<ListElement>) {
     Column(modifier = Modifier.fillMaxSize()) {
         list.forEach { element ->
-            Row(modifier = Modifier.padding(vertical = 8.dp)) {
+            Row(
+                modifier = Modifier.padding(vertical = 8.dp)
+                    .clickable {
+                        navController.navigate(DetailsScreenRoute(element.id))
+                    }
+            ) {
                 AsyncImage(
                     modifier = Modifier.size(136.dp),
                     model = element.image,

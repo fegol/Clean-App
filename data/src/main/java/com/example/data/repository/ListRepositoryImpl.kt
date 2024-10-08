@@ -12,6 +12,7 @@ class ListRepositoryImpl : ListRepository {
         delay(5_000)
         return@withContext listOf(
             ListElement(
+                id = 0,
                 image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
                 title = "title",
                 subtitle = "test",
@@ -20,6 +21,7 @@ class ListRepositoryImpl : ListRepository {
                 )
             ),
             ListElement(
+                id = 1,
                 image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
                 title = "title",
                 subtitle = "test",
@@ -28,6 +30,7 @@ class ListRepositoryImpl : ListRepository {
                 )
             ),
             ListElement(
+                id = 2,
                 image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
                 title = "title",
                 subtitle = "test",
@@ -36,6 +39,7 @@ class ListRepositoryImpl : ListRepository {
                 )
             ),
             ListElement(
+                id = 3,
                 image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
                 title = "title",
                 subtitle = "test",

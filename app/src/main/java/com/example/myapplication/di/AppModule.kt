@@ -4,6 +4,7 @@ import com.example.data.network.Api
 import com.example.data.repository.NetworkRepository
 import com.example.domain.repository.ListRepository
 import com.example.domain.usecase.ListUseCase
+import com.example.myapplication.details.vm.DetailsViewModel
 import com.example.myapplication.main.vm.MainViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -19,5 +20,6 @@ val appModule = module {
     }
     single<ListRepository> { NetworkRepository(get()) }
     single { ListUseCase(get()) }
-    viewModel { MainViewModel(get()) }
+    viewModel { MainViewModel(get(), get()) }
+    viewModel { DetailsViewModel(get()) }
 }

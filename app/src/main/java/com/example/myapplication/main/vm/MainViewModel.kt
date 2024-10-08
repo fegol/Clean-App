@@ -1,16 +1,21 @@
 package com.example.myapplication.main.vm
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.example.data.repository.ListRepositoryImpl
 import com.example.domain.usecase.ListUseCase
+import com.example.myapplication.main.MainScreenRoute
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainViewModel(
-    private val useCase: ListUseCase
+    private val useCase: ListUseCase,
+    private val handle: SavedStateHandle
 ): ViewModel() {
 
     private val _state = MutableStateFlow<MainState>(MainState.Loading)
@@ -29,5 +34,6 @@ class MainViewModel(
             val result = useCase.execute(Unit)
             _state.emit(MainState.Content(result))
         }
+        Timber.e(handle.toRoute<MainScreenRoute>().toString())
     }
 }
