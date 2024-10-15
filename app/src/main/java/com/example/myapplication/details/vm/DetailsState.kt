@@ -10,6 +10,7 @@ sealed class DetailsState(val title: String) {
     ) : DetailsState(errorTitle)
 
     data class Content(
-        val element: ListElement
+        val element: ListElement,
+        val read: Boolean
     ) : DetailsState(element.title)
 }

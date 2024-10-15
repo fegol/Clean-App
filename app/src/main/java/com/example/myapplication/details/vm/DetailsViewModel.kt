@@ -4,16 +4,18 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.example.domain.repository.LocalStorageRepository
+import com.example.domain.usecase.ElementByIdUseCase
 import com.example.myapplication.details.DetailsScreenRoute
-import com.example.myapplication.main.vm.MainState
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class DetailsViewModel(
-    private val savedStateHandle: SavedStateHandle
+    private val useCase: ElementByIdUseCase,
+    private val savedStateHandle: SavedStateHandle,
+    private val storage: LocalStorageRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow<DetailsState>(DetailsState.Loading)
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -39,7 +41,20 @@ class DetailsViewModel(
         get() = _state
 
     init {
-        Timber.e(savedStateHandle.toRoute<DetailsScreenRoute>().toString())
+        loadContent()
     }
 
+    fun markAsRead() {
+        val route = savedStateHandle.toRoute<DetailsScreenRoute>()
+        storage.markAsRead(route.id)
+        loadContent()
+    }
+
+    private fun loadContent() {
+        viewModelScope.launch(context = exceptionHandler) {
+            val route = savedStateHandle.toRoute<DetailsScreenRoute>()
+            val result = useCase.execute(route.id)
+            _state.emit(DetailsState.Content(result, storage.isMarkAsRead(route.id)))
+        }
+    }
 }

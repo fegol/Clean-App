@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -17,6 +18,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,19 +28,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.myapplication.R
+import com.example.myapplication.details.vm.DetailsState
 import com.example.myapplication.details.vm.DetailsViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(navController: NavController, vm: DetailsViewModel = koinViewModel()) {
+    val state = vm.state.collectAsState()
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
                         modifier = Modifier.padding(start = 16.dp),
-                        text = "Details"
+                        text = state.value.title
                     )
                 },
                 navigationIcon = {
@@ -59,14 +63,28 @@ fun DetailsScreen(navController: NavController, vm: DetailsViewModel = koinViewM
         Column(
             modifier = Modifier.padding(it)
         ) {
+            when (val st = state.value) {
+                is DetailsState.Content -> {
+                    Text(text = st.element.id.toString())
+                    Text(text = st.read.toString())
+                }
+
+                is DetailsState.Error -> {
+                    Text(text = st.message)
+                }
+
+                DetailsState.Loading -> {
+                    CircularProgressIndicator()
+                }
+            }
             Text(text = "Some details screen")
-            Progress()
+            Progress(vm)
         }
     }
 }
 
 @Composable
-fun Progress() {
+fun Progress(vm: DetailsViewModel) {
     var progressValue by remember { mutableStateOf(0f) }
     val progress = animateFloatAsState(
         targetValue = progressValue,
@@ -74,6 +92,9 @@ fun Progress() {
             durationMillis = 10_000,
             easing = LinearEasing
         ),
+        finishedListener = {
+            vm.markAsRead()
+        }
     )
     LinearProgressIndicator(
         modifier = Modifier
