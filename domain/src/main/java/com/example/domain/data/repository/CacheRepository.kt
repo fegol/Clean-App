@@ -1,4 +1,4 @@
-package com.example.domain.repository
+package com.example.domain.data.repository
 
 interface CacheRepository {
     suspend fun <T> getAndSave(

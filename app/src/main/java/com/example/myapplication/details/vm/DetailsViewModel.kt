@@ -4,7 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.example.domain.repository.LocalStorageRepository
+import com.example.domain.data.repository.LocalStorageRepository
+import com.example.domain.entity.ListElementEntity
 import com.example.domain.usecase.ElementByIdUseCase
 import com.example.myapplication.details.DetailsScreenRoute
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -56,5 +57,9 @@ class DetailsViewModel(
             val result = useCase.execute(route.id)
             _state.emit(DetailsState.Content(result, storage.isMarkAsRead(route.id)))
         }
+    }
+
+    fun like(elementEntity: ListElementEntity, like: Boolean) {
+        storage.like(elementEntity.id, like)
     }
 }

@@ -1,6 +1,6 @@
 package com.example.data.repository
 
-import com.example.domain.repository.CacheRepository
+import com.example.domain.data.repository.CacheRepository
 
 class CacheRepositoryImpl : CacheRepository {
 

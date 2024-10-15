@@ -2,9 +2,9 @@ package com.example.data.repository
 
 import android.content.res.Resources.NotFoundException
 import com.example.data.network.Api
-import com.example.domain.entity.ListElement
-import com.example.domain.repository.CacheRepository
-import com.example.domain.repository.ListRepository
+import com.example.domain.data.entity.ListElement
+import com.example.domain.data.repository.CacheRepository
+import com.example.domain.data.repository.ListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

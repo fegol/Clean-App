@@ -12,17 +12,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.domain.entity.ListElement
+import com.example.domain.entity.ListElementEntity
 import com.example.myapplication.details.DetailsScreenRoute
 import com.example.myapplication.main.vm.MainState
 import com.example.myapplication.main.vm.MainViewModel
+import com.example.myapplication.ui.view.Like
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -34,7 +38,9 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel = koinView
                 ContentState(
                     navController = navController,
                     list = st.list
-                )
+                ) { element, like ->
+                    viewModel.like(element, like)
+                }
             }
 
             is MainState.Error -> {
@@ -54,11 +60,17 @@ fun ErrorState(message: String) {
 }
 
 @Composable
-fun ContentState(navController: NavController, list: List<ListElement>) {
+fun ContentState(
+    navController: NavController,
+    list: List<ListElementEntity>,
+    onLike: (ListElementEntity, Boolean) -> Unit
+) {
     Column(modifier = Modifier.fillMaxSize()) {
         list.forEach { element ->
             Row(
-                modifier = Modifier.padding(vertical = 8.dp)
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth()
                     .clickable {
                         navController.navigate(DetailsScreenRoute(element.id))
                     }
@@ -71,6 +83,11 @@ fun ContentState(navController: NavController, list: List<ListElement>) {
                 )
                 Spacer(modifier = Modifier.width(24.dp))
                 Text(text = element.title)
+                val like = remember { mutableStateOf(element.like) }
+                Like(modifier = Modifier, like = like)
+                LaunchedEffect(like.value) {
+                    onLike.invoke(element, like.value)
+                }
             }
         }
     }

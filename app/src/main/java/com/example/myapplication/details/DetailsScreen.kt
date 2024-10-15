@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import com.example.myapplication.R
 import com.example.myapplication.details.vm.DetailsState
 import com.example.myapplication.details.vm.DetailsViewModel
+import com.example.myapplication.ui.view.Like
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,6 +57,18 @@ fun DetailsScreen(navController: NavController, vm: DetailsViewModel = koinViewM
                         painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                         contentDescription = ""
                     )
+                },
+                actions = {
+                    if (state.value is DetailsState.Content) {
+                        val content = state.value as DetailsState.Content
+                        val like = remember {
+                            mutableStateOf(content.element.like)
+                        }
+                        Like(modifier = Modifier, like = like)
+                        LaunchedEffect(like.value) {
+                            vm.like(content.element, like.value)
+                        }
+                    }
                 }
             )
         }

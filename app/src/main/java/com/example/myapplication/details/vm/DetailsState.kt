@@ -1,6 +1,6 @@
 package com.example.myapplication.details.vm
 
-import com.example.domain.entity.ListElement
+import com.example.domain.entity.ListElementEntity
 
 sealed class DetailsState(val title: String) {
     data object Loading : DetailsState("Loading...")
@@ -10,7 +10,7 @@ sealed class DetailsState(val title: String) {
     ) : DetailsState(errorTitle)
 
     data class Content(
-        val element: ListElement,
+        val element: ListElementEntity,
         val read: Boolean
     ) : DetailsState(element.title)
 }

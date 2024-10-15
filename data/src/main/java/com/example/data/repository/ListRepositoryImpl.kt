@@ -1,8 +1,8 @@
 package com.example.data.repository
 
-import com.example.domain.entity.ListButton
-import com.example.domain.entity.ListElement
-import com.example.domain.repository.ListRepository
+import com.example.domain.data.entity.ListButton
+import com.example.domain.data.entity.ListElement
+import com.example.domain.data.repository.ListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
