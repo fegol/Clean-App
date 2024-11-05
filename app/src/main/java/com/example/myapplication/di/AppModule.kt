@@ -3,6 +3,7 @@ package com.example.myapplication.di
 import android.content.Context
 import com.example.data.network.Api
 import com.example.data.repository.CacheRepositoryImpl
+import com.example.data.repository.ListRepositoryImpl
 import com.example.data.repository.LocalStorageRepositoryImpl
 import com.example.data.repository.NetworkRepository
 import com.example.domain.data.entity.ListElement
@@ -33,7 +34,7 @@ val appModule = module {
     }
     single<LocalStorageRepository> { LocalStorageRepositoryImpl(get()) }
     single<CacheRepository> { CacheRepositoryImpl() }
-    single<ListRepository> { NetworkRepository(get(), get()) }
+    single<ListRepository> { ListRepositoryImpl() }
     single { ListUseCase(get(), get()) }
     single { ElementByIdUseCase(get(), get(), get()) }
     single<Mapper<ListElement, ListElementEntity>> { ListElementMapper(get()) }

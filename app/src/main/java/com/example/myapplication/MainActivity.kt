@@ -34,6 +34,7 @@ class MainActivity : ComponentActivity() {
                         .padding(start = 16.dp, end = 16.dp),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = MainScreenRoute) {
                         composable<MainScreenRoute> {

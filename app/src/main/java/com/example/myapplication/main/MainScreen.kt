@@ -19,15 +19,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import coil.compose.AsyncImage
 import com.example.domain.entity.ListElementEntity
 import com.example.myapplication.details.DetailsScreenRoute
 import com.example.myapplication.main.vm.MainState
 import com.example.myapplication.main.vm.MainViewModel
 import com.example.myapplication.ui.view.Like
+import com.example.myapplication.workers.MyWorker
 import org.koin.androidx.compose.koinViewModel
+import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel = koinViewModel()) {
@@ -67,12 +74,18 @@ fun ContentState(
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
         list.forEach { element ->
+            val ctx = LocalContext.current
             Row(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .fillMaxWidth()
                     .clickable {
                         navController.navigate(DetailsScreenRoute(element.id))
+                        WorkManager.getInstance(ctx).enqueueUniquePeriodicWork(
+                            "some_name",
+                            ExistingPeriodicWorkPolicy.KEEP,
+                            PeriodicWorkRequestBuilder<MyWorker>(1, TimeUnit.HOURS).build()
+                        )
                     }
             ) {
                 AsyncImage(
