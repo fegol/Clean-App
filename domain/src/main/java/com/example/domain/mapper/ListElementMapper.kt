@@ -7,7 +7,7 @@ import com.example.domain.entity.ListElementEntity
 class ListElementMapper(
     private val localStorageRepository: LocalStorageRepository
 ) : Mapper<ListElement, ListElementEntity> {
-    override fun map(from: ListElement): ListElementEntity {
+    override suspend fun map(from: ListElement): ListElementEntity {
         return ListElementEntity(
             id = from.id,
             image = from.image,

@@ -65,8 +65,13 @@ fun DetailsScreen(navController: NavController, vm: DetailsViewModel = koinViewM
                             mutableStateOf(content.element.like)
                         }
                         Like(modifier = Modifier, like = like)
+                        val isFirstLike = remember { mutableStateOf(true) }
                         LaunchedEffect(like.value) {
-                            vm.like(content.element, like.value)
+                            if (isFirstLike.value) {
+                                isFirstLike.value = false
+                            } else {
+                                vm.like(content.element, like.value)
+                            }
                         }
                     }
                 }

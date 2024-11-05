@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.devtools.ksp'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.serialization'
 }
@@ -58,6 +59,11 @@ dependencies {
     implementation "io.insert-koin:koin-androidx-compose:4.0.0"
     implementation "androidx.navigation:navigation-compose:2.8.1"
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3'
+
+
+    implementation "androidx.room:room-ktx:2.6.1"
+    // To use Kotlin annotation processing tool (kapt)
+    ksp "androidx.room:room-compiler:2.6.1"
 
     // Coil
     implementation "io.coil-kt:coil-compose:2.7.0"

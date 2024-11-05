@@ -45,7 +45,7 @@ class DetailsViewModel(
         loadContent()
     }
 
-    fun markAsRead() {
+    fun markAsRead() = viewModelScope.launch(context = exceptionHandler) {
         val route = savedStateHandle.toRoute<DetailsScreenRoute>()
         storage.markAsRead(route.id)
         loadContent()
@@ -59,7 +59,7 @@ class DetailsViewModel(
         }
     }
 
-    fun like(elementEntity: ListElementEntity, like: Boolean) {
+    fun like(elementEntity: ListElementEntity, like: Boolean) = viewModelScope.launch(context = exceptionHandler) {
         storage.like(elementEntity.id, like)
     }
 }

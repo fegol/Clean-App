@@ -33,7 +33,6 @@ import com.example.myapplication.main.vm.MainViewModel
 import com.example.myapplication.ui.view.Like
 import com.example.myapplication.workers.MyWorker
 import org.koin.androidx.compose.koinViewModel
-import java.time.Duration
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -81,11 +80,13 @@ fun ContentState(
                     .fillMaxWidth()
                     .clickable {
                         navController.navigate(DetailsScreenRoute(element.id))
-                        WorkManager.getInstance(ctx).enqueueUniquePeriodicWork(
-                            "some_name",
-                            ExistingPeriodicWorkPolicy.KEEP,
-                            PeriodicWorkRequestBuilder<MyWorker>(1, TimeUnit.HOURS).build()
-                        )
+                        WorkManager
+                            .getInstance(ctx)
+                            .enqueueUniquePeriodicWork(
+                                "some_name",
+                                ExistingPeriodicWorkPolicy.KEEP,
+                                PeriodicWorkRequestBuilder<MyWorker>(1, TimeUnit.HOURS).build()
+                            )
                     }
             ) {
                 AsyncImage(
@@ -98,8 +99,13 @@ fun ContentState(
                 Text(text = element.title)
                 val like = remember { mutableStateOf(element.like) }
                 Like(modifier = Modifier, like = like)
+                val isFirstLike = remember { mutableStateOf(true) }
                 LaunchedEffect(like.value) {
-                    onLike.invoke(element, like.value)
+                    if (isFirstLike.value) {
+                        isFirstLike.value = false
+                    } else {
+                        onLike.invoke(element, like.value)
+                    }
                 }
             }
         }

@@ -7,23 +7,23 @@ import com.example.domain.data.repository.LocalStorageRepository
 class LocalStorageRepositoryImpl(
     private val sharedPreferences: SharedPreferences
 ) : LocalStorageRepository {
-    override fun markAsRead(id: Long) {
+    override suspend fun markAsRead(id: Long) {
         sharedPreferences.edit {
             putBoolean("readed_$id", true)
         }
     }
 
-    override fun isMarkAsRead(id: Long): Boolean {
+    override suspend fun isMarkAsRead(id: Long): Boolean {
         return sharedPreferences.getBoolean("readed_$id", false)
     }
 
-    override fun like(id: Long, like: Boolean) {
+    override suspend fun like(id: Long, like: Boolean) {
         sharedPreferences.edit {
             putBoolean("liked_$id", like)
         }
     }
 
-    override fun isLiked(id: Long): Boolean {
+    override suspend fun isLiked(id: Long): Boolean {
         return sharedPreferences.getBoolean("liked_$id", false)
     }
 }

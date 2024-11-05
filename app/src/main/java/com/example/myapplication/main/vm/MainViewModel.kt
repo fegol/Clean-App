@@ -40,6 +40,8 @@ class MainViewModel(
     }
 
     fun like(elementEntity: ListElementEntity, like: Boolean) {
-        localStorageRepository.like(elementEntity.id, like)
+        viewModelScope.launch(context = exceptionHandler) {
+            localStorageRepository.like(elementEntity.id, like)
+        }
     }
 }
