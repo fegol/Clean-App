@@ -1,5 +1,13 @@
 package com.example.myapplication.main
 
+import android.Manifest
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +29,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker.PermissionResult
+import androidx.core.content.getSystemService
 import androidx.navigation.NavController
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
@@ -30,6 +41,8 @@ import com.example.domain.entity.ListElementEntity
 import com.example.myapplication.details.DetailsScreenRoute
 import com.example.myapplication.main.vm.MainState
 import com.example.myapplication.main.vm.MainViewModel
+import com.example.myapplication.notification.NotificationHelper
+import com.example.myapplication.services.MyService
 import com.example.myapplication.ui.view.Like
 import com.example.myapplication.workers.MyWorker
 import org.koin.androidx.compose.koinViewModel
@@ -74,19 +87,39 @@ fun ContentState(
     Column(modifier = Modifier.fillMaxSize()) {
         list.forEach { element ->
             val ctx = LocalContext.current
+            val permissionLauncher = rememberLauncherForActivityResult(
+                contract = ActivityResultContracts.RequestPermission()
+            ) { isGranted ->
+                if(isGranted) {
+                    sendNotification(ctx)
+                }
+            }
             Row(
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .fillMaxWidth()
                     .clickable {
-                        navController.navigate(DetailsScreenRoute(element.id))
-                        WorkManager
-                            .getInstance(ctx)
-                            .enqueueUniquePeriodicWork(
-                                "some_name",
-                                ExistingPeriodicWorkPolicy.KEEP,
-                                PeriodicWorkRequestBuilder<MyWorker>(1, TimeUnit.HOURS).build()
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            val permission = ContextCompat.checkSelfPermission(
+                                ctx,
+                                Manifest.permission.POST_NOTIFICATIONS
                             )
+                            if (permission == PackageManager.PERMISSION_GRANTED) {
+                                sendNotification(ctx)
+                            } else {
+                                permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        } else {
+                            sendNotification(ctx)
+                        }
+//                        navController.navigate(DetailsScreenRoute(element.id))
+//                        WorkManager
+//                            .getInstance(ctx)
+//                            .enqueueUniquePeriodicWork(
+//                                "some_name",
+//                                ExistingPeriodicWorkPolicy.KEEP,
+//                                PeriodicWorkRequestBuilder<MyWorker>(1, TimeUnit.HOURS).build()
+//                            )
                     }
             ) {
                 AsyncImage(
@@ -110,4 +143,18 @@ fun ContentState(
             }
         }
     }
+}
+
+private fun sendNotification(context: Context) {
+    ContextCompat.startForegroundService(
+        context,
+        Intent(context, MyService::class.java)
+    )
+//    val notificationManager = context.getSystemService<NotificationManager>() ?: return
+//    val notification = NotificationHelper.createNotification(
+//        context = context,
+//        title = "title",
+//        text = "text"
+//    )
+//    notificationManager.notify(101, notification)
 }
