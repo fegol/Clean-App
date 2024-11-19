@@ -22,9 +22,34 @@ android {
         }
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
+            storeFile file(rootProject.projectDir.path + "/KEY_INFO/my_beeline_debug.jks")
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storePassword "android"
+        }
+    }
+
+    flavorDimensions = ["store"]
+    productFlavors {
+        huawei {
+            dimension = "store"
+            buildConfigField 'String', "test", "\"huawei\""
+        }
+        googlePlay {
+            dimension = "store"
+            buildConfigField 'String', "test", "\"googlePlay\""
+        }
+    }
+
+
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -36,6 +61,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
+        buildConfig = true
         compose true
     }
     composeOptions {

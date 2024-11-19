@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -21,7 +22,9 @@ import com.example.myapplication.details.DetailsScreen
 import com.example.myapplication.details.DetailsScreenRoute
 import com.example.myapplication.main.MainScreen
 import com.example.myapplication.main.MainScreenRoute
+import com.example.myapplication.test.TestClass
 import com.example.myapplication.ui.theme.MyApplicationTheme
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
