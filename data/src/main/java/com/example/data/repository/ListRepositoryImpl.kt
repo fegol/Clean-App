@@ -12,25 +12,25 @@ class ListRepositoryImpl : ListRepository {
     private val list = listOf(
         ListElement(
             id = 0,
-            image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
-            title = "title",
-            subtitle = "test",
+            image = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRQfr1rXTMG-svUWWtNQvvas4TJ6LrEFTBP5dhwAl3hIJ9GCmM0SapCQ_pxR-bIUicblifb",
+            title = "title 0",
+            subtitle = "description 0",
             button = ListButton(
                 title = "test"
             )
         ),
         ListElement(
             id = 1,
-            image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
-            title = "title",
-            subtitle = "test",
+            image = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRQfr1rXTMG-svUWWtNQvvas4TJ6LrEFTBP5dhwAl3hIJ9GCmM0SapCQ_pxR-bIUicblifb",
+            title = "title 1",
+            subtitle = "description 1",
             button = ListButton(
                 title = "test"
             )
         ),
         ListElement(
             id = 2,
-            image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
+            image = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRQfr1rXTMG-svUWWtNQvvas4TJ6LrEFTBP5dhwAl3hIJ9GCmM0SapCQ_pxR-bIUicblifb",
             title = "title",
             subtitle = "test",
             button = ListButton(
@@ -39,7 +39,7 @@ class ListRepositoryImpl : ListRepository {
         ),
         ListElement(
             id = 3,
-            image = "https://avatars.mds.yandex.net/i?id=df6f0a9b59a9738610c34882daea14963b51056a-8249766-images-thumbs&n=13",
+            image = "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcRQfr1rXTMG-svUWWtNQvvas4TJ6LrEFTBP5dhwAl3hIJ9GCmM0SapCQ_pxR-bIUicblifb",
             title = "title",
             subtitle = "test",
             button = ListButton(
@@ -49,7 +49,6 @@ class ListRepositoryImpl : ListRepository {
     )
 
     override suspend fun getList(): List<ListElement> = withContext(Dispatchers.IO) {
-        delay(5_000)
         return@withContext list
     }
 

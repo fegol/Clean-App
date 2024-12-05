@@ -1,7 +1,6 @@
 package com.example.myapplication.main
 
 import android.Manifest
-import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -30,23 +29,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker.PermissionResult
-import androidx.core.content.getSystemService
 import androidx.navigation.NavController
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import coil.compose.AsyncImage
 import com.example.domain.entity.ListElementEntity
-import com.example.myapplication.details.DetailsScreenRoute
 import com.example.myapplication.main.vm.MainState
 import com.example.myapplication.main.vm.MainViewModel
-import com.example.myapplication.notification.NotificationHelper
 import com.example.myapplication.services.MyService
 import com.example.myapplication.ui.view.Like
-import com.example.myapplication.workers.MyWorker
 import org.koin.androidx.compose.koinViewModel
-import java.util.concurrent.TimeUnit
 
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel = koinViewModel()) {
