@@ -34,6 +34,7 @@ import coil.compose.AsyncImage
 import com.example.domain.entity.ListElementEntity
 import com.example.myapplication.main.vm.MainState
 import com.example.myapplication.main.vm.MainViewModel
+import com.example.myapplication.media.MyMediaService
 import com.example.myapplication.services.MyService
 import com.example.myapplication.ui.view.Like
 import org.koin.androidx.compose.koinViewModel
@@ -138,7 +139,9 @@ fun ContentState(
 private fun sendNotification(context: Context) {
     ContextCompat.startForegroundService(
         context,
-        Intent(context, MyService::class.java)
+        Intent(context, MyMediaService::class.java).apply {
+            action = MyMediaService.STARTFOREGROUND_ACTION
+        }
     )
 //    val notificationManager = context.getSystemService<NotificationManager>() ?: return
 //    val notification = NotificationHelper.createNotification(
